@@ -10,13 +10,10 @@
     {{ $app->assets(['assets:lib/uikit/js/components/form-password.min.js'], $app['cockpit/version']) }}
 
     <style>
-      body {
-        background-color: #2a2c74;
-      }
-
       #login-container {
         border-radius: 10px;
       }
+      <?= $app->retrieve('config/auth0/styles', '') ?>
     </style>
 
     <script type="text/javascript" src="https://cdn.auth0.com/js/lock/11.22.3/lock.min.js"></script>
@@ -35,29 +32,21 @@
 <script type="text/javascript">
 const AUTH0_ID = '<?= $app['config/auth0/secret'] ?>';
 const AUTH0_DOMAIN = '<?= $app['config/auth0/domain'] ?>';
+const AUTH0_LOCK_OPTIONS = <?= $app->retrieve('config/auth0/lock_options', '{}') ?>;
 
 const isLogoutAction = location.search.indexOf('logout=1') > -1;
 const logoutButton = document.getElementById('logout');
 
-const lock = new Auth0Lock('<?= $app['config/auth0/id'] ?>', '<?= $app['config/auth0/domain'] ?>', {
+const lock = new Auth0Lock('<?= $app['config/auth0/id'] ?>', '<?= $app['config/auth0/domain'] ?>', Object.assign({
   container: 'login-container',
   allowSignUp: false,
-  theme: {
-    logo: 'https://rootz.com/wp-content/uploads/2018/12/rootz_logo-01.png',
-    primaryColor: '#2a2c74',
-    labeledSubmitButton: false
-  },
-  languageDictionary: {
-    //title: '<?= $app['app.name'] ?>'
-    title: ''
-  },
   auth: {
     sso: false,
     params: {
       scopes: '<?= $app['config/auth0/scope'] ?>'
     }
   }
-});
+}, AUTH0_LOCK_OPTIONS || {}));
 
 function logout(isAction) {
   logoutButton.classList.add('uk-hidden');
