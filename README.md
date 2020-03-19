@@ -14,19 +14,19 @@ auth0:
     namespace: https://company.com  # optional, see below
 ```
 
-Auth0 no longer exposes `app_metadata` or user assigned roles via tokeninf endpoint. However, you can fix this with custom rule:
+Auth0 no longer exposes `app_metadata` or user assigned roles via tokeninfo endpoint. However, you can fix this with custom Auth0 rule:
 
 ```
 function (user, context, callback) {
   const namespace = 'https://company.com/';
   if(user.app_metadata && user.app_metadata.cockpit) {
-  	context.idToken[namespace + 'cockpit'] = user.app_metadata.cockpit;
+    context.idToken[namespace + 'cockpit'] = user.app_metadata.cockpit;
   }
   context.idToken[namespace + 'roles'] = context.authorization.roles || [];
   callback(null, user, context);
 }
 ```
-To make this work, you also need to add `app_metadata` and `roles` scopes to your authorization scope. You also need to add `namespace: https://company.com` to the configuration under `auth0`, so that plugin knows where to read namespaced information. This way you can assign `admin` Cockpit role by assigning role `cockpit:admin` on Auth0, or by setting up custom roles for cockpit in the `app_metadata`.
+To make this work, you also need to add `app_metadata` and `roles` scopes to your authorization scope. You also need to add `namespace: https://company.com` to the configuration under `auth0`, so that plugin knows where to read namespaced information. This way you can assign `admin` Cockpit role by assigning role `cockpit:admin` on Auth0 or by setting up custom roles for cockpit in the `app_metadata`.
 
 ```
 { "cockpit": "yourrole" }
