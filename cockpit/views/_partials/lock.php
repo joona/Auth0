@@ -1,36 +1,3 @@
-<!doctype html>
-<html class="uk-height-1-1" lang="en" data-base="@base('/')" data-route="@route('/')">
-<head>
-    <meta charset="UTF-8">
-    <title>@lang('Authenticate Please!')</title>
-    <link rel="icon" href="@base('/favicon.ico')" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-    {{ $app->assets($app['app.assets.base'], $app['cockpit/version']) }}
-    {{ $app->assets(['assets:lib/uikit/js/components/form-password.min.js'], $app['cockpit/version']) }}
-
-    <style>
-      body {
-        background-color: #2a2c74;
-      }
-
-      #login-container {
-        border-radius: 10px;
-      }
-    </style>
-
-    <script type="text/javascript" src="https://cdn.auth0.com/js/lock/11.22.3/lock.min.js"></script>
-
-
-</head>
-<body class="login-page uk-height-viewport uk-flex uk-flex-middle uk-flex-center">
-    <div>
-        <div class="uk-display-block uk-panel-box uk-panel-card uk-panel-card-hover" id="login-container" style="padding:0;"></div>
-        <div class="uk-text-center uk-margin">
-            <button id="logout" class="uk-button uk-button-large uk-button-outline uk-text-danger uk-hidden" type="button" name="button">Logout</button>
-        </div>
-    </div>
-
 
 <script type="text/javascript">
 const AUTH0_ID = '<?= $app['config/auth0/secret'] ?>';
@@ -130,8 +97,8 @@ function reviveSession() {
   }
 }
 
-reviveSession();
-lock.show();
+//reviveSession();
+//lock.show();
 
 lock.on('authenticated', auth => {
   // validate the token first
@@ -147,7 +114,4 @@ lock.on('authenticated', auth => {
     authorize(auth.accessToken, true);
   });
 });
-
-</script>
-</body>
-</html>
+</style>

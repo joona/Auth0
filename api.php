@@ -1,41 +1,25 @@
 <?php
 
-$this->on('cockpit.api.authenticate', function($data) {
+$app->on('cockpit.api.authenticate', function($data) use($app) {
+    err('Checking user session', var_export($data, true));
 
-    if ($data['token']) {
-
+    if ($data['token'] && $data['resource'] == 'auth0') {
         $user = $this->module('auth0')->userinfo($data['token'], [
             'normalize' => true,
-            'cache'     => $this->retrieve('config/auth0/cache', false)
+            'cache'     => $app->retrieve('config/auth0/cache', false)
         ]);
+
+        err('authentication middleware got user', var_export($user, true));
 
         if ($user) {
             $data['authenticated'] = true;
             $data['user'] = $user;
         }
     }
+
+    err('Authenticate', var_export($data, true));
 });
 
-
-
-$app->bind('/api/auth0/loginByAccessToken', function() {
-
-    $token = $this->param('token', null);
-
-    if (!$token) {
-        return false;
-    }
-
-    $user = $this->module('auth0')->userinfo($token, ['normalize'=>true]);
-
-    if (!$user) {
-        return false;
-    }
-
-    if ($this->module("cockpit")->hasaccess('cockpit', 'backend', @$user['group'])) {
-        $this->module('cockpit')->setUser($user, true);
-        return $user;
-    }
-
-    return false;
+$app->on('cockpit.rest.init', function($routes) use($app) {
+  $routes['auth0'] = 'Auth0\\Controller\\RestApi';
 });

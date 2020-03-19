@@ -10,7 +10,7 @@
     <div class="uk-text-center">
         <img src="@base('auth0:assets/auth0.svg')" width="100" alt="Auth0">
         <div class="uk-margin">
-            <strong class="uk-h2">Owned By Auth0</strong>
+            <strong class="uk-h2">Managed By Auth0</strong>
         </div>
     </div>
 </div>
