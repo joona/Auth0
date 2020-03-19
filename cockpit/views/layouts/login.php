@@ -39,7 +39,7 @@ const AUTH0_DOMAIN = '<?= $app['config/auth0/domain'] ?>';
 const isLogoutAction = location.search.indexOf('logout=1') > -1;
 const logoutButton = document.getElementById('logout');
 
-const lock = new Auth0Lock('<?= $app['config/auth0/secret'] ?>', '<?= $app['config/auth0/domain'] ?>', {
+const lock = new Auth0Lock('<?= $app['config/auth0/id'] ?>', '<?= $app['config/auth0/domain'] ?>', {
   container: 'login-container',
   allowSignUp: false,
   theme: {
